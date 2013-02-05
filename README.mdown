@@ -1,0 +1,105 @@
+Manipulate [![Build status](https://secure.travis-ci.org/theozaurus/manipulate-js.png)](http://travis-ci.org/theozaurus/manipulate-js)
+==========
+
+A library designed to help make manipulating strings or objects into different
+formats more flexible by allowing operations to be chained. Custom operations
+can easily be created, then chained together with others to perform more complex
+conversions.
+
+Usage
+=====
+
+In order to avoid any namespace conflicts `Manipulate` uses the public namespace
+`com.jivatechnology` (reverse DNS scheme). You can import this into your local
+scope with something like:
+
+    var Manipulate = com.jivatechnology.Manipulate;
+
+If you just want to use existing classes we can just do:
+
+    var Manipulate = com.jivatechnology.Manipulate;
+
+    var manipulation = (new Manipulate.Markdown.toHTML()).then(
+      new Manipulate.HTML.shortenLinks()
+    ).then(
+      new Manipulate.HTML.toStr()
+    );
+
+    manipulation.render("# Foo")
+
+If you want to create your own then that can be done like so:
+
+    Manipulate.Text.upcase = Manipulate.build(
+      {
+        convert: function(input){ return input.toUpperCase(); }
+      }
+    );
+
+Sometimes you might want to create a configurable manipulation, to do this we
+can add an `init` function:
+
+    Manipulate.Text.shorten = Manipulate.build(
+      {
+        init: function(opts){ this.opts = opts || {max_words: 5}; },
+        convert: function(input){
+          var words = this.opts.max_words;
+          return input.split(" ").splice(0,max_words).join(" ");
+        }
+      }
+    );
+
+Now when we build our new `shorten` manipulation we can pass it some
+configuration:
+
+    var manipulation = new Manipulate.Text.shorten({max_words: 2});
+    manipulation.render("one two three");
+    > "one two"
+
+Tests
+=====
+
+All of the tests are written in [Jasmine](http://pivotal.github.com/jasmine/).
+To run the tests, you will first need to install [Ruby](http://ruby-lang.org)
+and [Bundler](http://gembundler.com/). Once you have this:
+
+    $ bundle install
+    $ bundle exec rake jasmine
+
+Open your browser to [http://localhost:8888](http://localhost:8888)
+
+If you want to run the tests directly in the console just type:
+
+    $ bundle exec rake jasmine:ci
+    /Users/theo/.rvm/rubies/ruby-1.9.3-p0/bin/ruby -S rspec spec/javascripts/support/jasmine_runner.rb --colour --format progress
+    [2012-03-15 15:46:50] INFO  WEBrick 1.3.1
+    [2012-03-15 15:46:50] INFO  ruby 1.9.3 (2011-10-30) [x86_64-darwin11.1.0]
+    [2012-03-15 15:46:50] INFO  WEBrick::HTTPServer#start: pid=39919 port=63714
+    Waiting for jasmine server on 63714...
+    jasmine server started.
+    Waiting for suite to finish in browser ...
+    ..........................................
+
+Or you can check the current status of master using [Travis](http://travis-ci.org/#!/theozaurus/manipulate-js)
+
+Building
+========
+
+Only `manipulate.js` is required if you just want the framework. If you want to
+use some of the built in manipulations you will need those files as well.
+
+[Sprockets](https://github.com/sstephenson/sprockets) is used to describe
+dependencies between the files, so if you are using Ruby on Rails with the Asset
+Pipeline you can copy the entire `src` folder to `vendor/assets` and in your
+Javascript add a comment at the top with the parts you need.
+
+  //= require manipulate
+  //= require manipulate/markdown
+
+Please note if you want to use markdown, then please include the external
+dependency [marked](https://github.com/chjj/marked)
+
+
+TODO
+====
+
+ - Expand library of manipulations
