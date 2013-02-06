@@ -23,7 +23,7 @@ If you just want to use existing classes we can just do:
       new Manipulate.HTML.shortenLinks()
     ).then(
       new Manipulate.HTML.toStr()
-    );
+    ).end();
 
     manipulation.render("# Foo")
 

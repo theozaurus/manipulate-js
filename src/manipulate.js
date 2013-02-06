@@ -9,7 +9,16 @@ if (!com.jivatechnology) { com.jivatechnology = {}; }
 
   Manipulation.prototype.then = function(link){
     this.next = link;
+    link.previous = this;
     return link;
+  };
+
+  Manipulation.prototype.end = function(){
+    if(this.previous){
+      return this.previous.end();
+    } else {
+      return this;
+    }
   };
 
   Manipulation.prototype.convert = function(v){

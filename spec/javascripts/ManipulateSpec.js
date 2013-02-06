@@ -61,6 +61,22 @@ describe("Manipulate", function() {
       });
     });
 
+    describe("#end", function(){
+      it("should return the head of the chain", function(){
+        var man1 = new klass();
+        var man2 = new klass();
+        var man3 = new klass();
+        var man4 = new klass();
+
+        man1.then(man2).then(man3).then(man4);
+
+        expect(man1.end()).toBe(man1);
+        expect(man2.end()).toBe(man1);
+        expect(man3.end()).toBe(man1);
+        expect(man4.end()).toBe(man1);
+      });
+    });
+
     describe("#render", function(){
       it("should call convert and return value if no chain", function(){
         var called = false;
