@@ -50,10 +50,10 @@ describe("Manipulate.Markdown", function(){
     });
 
     it("should return a DocumentFragment", function(){
-      var result = subject.convert("This is __markdown__");
+      var result = subject.convert("p1\n\np2");
 
       expect( result instanceof DocumentFragment ).toBeTruthy();
-      expect( result ).toBeEquivalentTo("<p>This is <strong>markdown</strong></p>");
+      expect( result ).toBeEquivalentTo("<p>p1</p><p>p2</p>");
     });
 
   });

@@ -30,8 +30,11 @@
       var fragment = document.createDocumentFragment();
 
       element.innerHTML = html_string;
-      for(var i = 0; i < element.children.length; i++){
-        var e = element.children[i];
+      var size = element.children.length;
+      for(var i = 0; i < size; i++){
+        // Always use 0 as we append to the fragment it is removed from the
+        // other element
+        var e = element.children[0];
         fragment.appendChild(e);
       }
 
