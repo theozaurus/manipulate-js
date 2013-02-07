@@ -5,8 +5,11 @@ beforeEach(function() {
 
       var wrappingElement = document.createElement("div");
       wrappingElement.appendChild(html);
-
       var string = wrappingElement.innerHTML;
+
+      var wrapExpected = document.createElement("div");
+      wrapExpected.innerHTML = expected;
+      expected = wrapExpected.innerHTML;
 
       var notText = this.isNot ? " not" : "";
       this.message = function(){
