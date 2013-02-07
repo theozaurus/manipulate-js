@@ -3,6 +3,39 @@ describe("Manipulate.HTML", function(){
   var scope = com.jivatechnology.Manipulate.HTML;
   var subject;
 
+  describe("transposeHeaderElements", function(){
+    beforeEach(function(){
+      subject = new scope.transposeHeaderElements(2);
+    });
+
+    it("should change header elements by `n` amount", function(){
+      var html = document.createDocumentFragment();
+      var wrapperElement = document.createElement("div");
+      wrapperElement.innerHTML = '<h1 class="foo">I should be h3</h1><h2>I should be <span>h4</span></h2>';
+      html.appendChild(wrapperElement);
+
+      var result = subject.convert(html);
+      var expected =
+        '<div><h3 class="foo">I should be h3</h3><h4>I should be <span>h4</span></h4></div>';
+
+      expect(result).toBeEquivalentTo(expected);
+    });
+
+    it("should not create any header elements that are greater than h6", function(){
+      var html = document.createDocumentFragment();
+      var wrapperElement = document.createElement("div");
+      wrapperElement.innerHTML = '<h5>I should be h6</h5><h6>I should be h6</h6>';
+      html.appendChild(wrapperElement);
+
+      var result = subject.convert(html);
+      var expected =
+        '<div><h6>I should be h6</h6><h6>I should be h6</h6></div>';
+
+      expect(result).toBeEquivalentTo(expected);
+    });
+
+  });
+
   describe("shortenLinks", function(){
 
     beforeEach(function(){

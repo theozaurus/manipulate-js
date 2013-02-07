@@ -4,6 +4,59 @@
 
   this.HTML = {};
 
+  // Changes hx tags by hx+n. e.g. h1 becomes h2, and h2 becomes h3 if n is 1
+  this.HTML.transposeHeaderElements = this.build({
+    init:    function(n){ this.n = n || 2; },
+    convert: function(html){
+      var max = 6;
+      var that = this;
+
+      var createNewElement = function(element,headerNum){
+        var newNumber = headerNum + that.n;
+        if(newNumber > max){ newNumber = max; }
+        if(newNumber != headerNum){
+          var newElement = document.createElement("h"+newNumber);
+
+          // Copy attributes
+          var attributes_length = element.attributes.length;
+          for(var i =0; i < attributes_length; i++){
+            var attr = element.attributes[i];
+            newElement.setAttributeNS(attr.namespaceURI, attr.name, attr.value);
+          }
+
+          // Move children
+          var size = element.childNodes.length;
+          for(var j = 0; j < size; j++){
+            // Always use 0 as we append to the fragment it is removed from the
+            // other element
+            var child = element.childNodes[0];
+            newElement.appendChild(child);
+          }
+
+          return newElement;
+        }
+      };
+
+      var processElements = function(elements,headerNum){
+        var size = elements.length;
+        for(var i=0; i < size; i++){
+          var element = elements[i];
+          var newElement = createNewElement(element,headerNum);
+          if(newElement){
+            element.parentElement.replaceChild(newElement,element);
+          }
+        }
+      };
+
+      for(var headerNum = max - 1; headerNum > 0; headerNum--){
+        var elements = html.querySelectorAll("h"+headerNum);
+        processElements(elements,headerNum);
+      }
+
+      return html;
+    }
+  });
+
   // This will look for links like "<a href='http://foo.com'>http://foo.com</a>"
   // and turn them into "<a href='http://foo.com'><abbr title='http://foo.com'>foo.com</abbr></a>"
   // If links are longer than max length it will shorten then further
