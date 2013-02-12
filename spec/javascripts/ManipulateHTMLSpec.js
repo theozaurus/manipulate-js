@@ -34,6 +34,18 @@ describe("Manipulate.HTML", function(){
       expect(result).toBeEquivalentTo(expected);
     });
 
+    it("should handle header elements where the parentNode is the documentFragment", function(){
+      var html = document.createDocumentFragment();
+      var element = document.createElement("h1")
+      element.innerHTML = "Hello";
+      html.appendChild(element);
+
+      var result = subject.convert(html);
+      var expected = "<h3>Hello</h3>";
+
+      expect(result).toBeEquivalentTo(expected);
+    });
+
   });
 
   describe("shortenLinks", function(){

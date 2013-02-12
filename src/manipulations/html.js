@@ -43,7 +43,7 @@
           var element = elements[i];
           var newElement = createNewElement(element,headerNum);
           if(newElement){
-            element.parentElement.replaceChild(newElement,element);
+            element.parentNode.replaceChild(newElement,element);
           }
         }
       };
