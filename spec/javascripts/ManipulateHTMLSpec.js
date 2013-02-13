@@ -3,6 +3,25 @@ describe("Manipulate.HTML", function(){
   var scope = com.jivatechnology.Manipulate.HTML;
   var subject;
 
+  describe("noFollowLinks", function(){
+    beforeEach(function(){
+      subject = new scope.noFollowLinks();
+    });
+
+    it("should make all links rel=nofollow", function(){
+      var html = document.createDocumentFragment();
+      var wrapperElement = document.createElement("div");
+      wrapperElement.innerHTML = '<a href="foo">some link</a><a href="foo" rel="follow">other link</a>';
+      html.appendChild(wrapperElement);
+
+      var result = subject.convert(html);
+      var expected =
+        '<div><a href="foo" rel="nofollow">some link</a><a href="foo" rel="nofollow">other link</a></div>';
+
+      expect(result).toBeEquivalentTo(expected);
+    });
+  });
+
   describe("transposeHeaderElements", function(){
     beforeEach(function(){
       subject = new scope.transposeHeaderElements(2);

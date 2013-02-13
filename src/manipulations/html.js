@@ -4,6 +4,20 @@
 
   this.HTML = {};
 
+  this.HTML.noFollowLinks = this.build({
+    convert: function(html){
+      var elements = html.querySelectorAll("a");
+
+      var size = elements.length;
+      for(var i=0; i < size; i++){
+        var element = elements[i];
+        element.setAttribute("rel","nofollow");
+      }
+
+      return html;
+    }
+  });
+
   // Changes hx tags by hx+n. e.g. h1 becomes h2, and h2 becomes h3 if n is 1
   this.HTML.transposeHeaderElements = this.build({
     init:    function(n){ this.n = n || 2; },
