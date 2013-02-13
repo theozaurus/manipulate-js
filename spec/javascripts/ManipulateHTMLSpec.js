@@ -77,12 +77,12 @@ describe("Manipulate.HTML", function(){
       var html = document.createDocumentFragment();
       var wrapperElement = document.createElement("p");
       wrapperElement.innerHTML =
-        'Here\'s some text with a link <a href="http://foo.com/some?long=true&nonsense=true">http://foo.com/some?long=true&nonsense=true</a>';
+        'Here\'s some text with a link <a href="http://foo.com/some?long=true&amp;nonsense=true&amp;long=true">http://foo.com/some?long=true&amp;nonsense=true&amp;long=true</a>';
       html.appendChild(wrapperElement);
 
       var result = subject.convert(html);
       var expected =
-        '<p>Here\'s some text with a link <a href="http://foo.com/some?long=true&nonsense=true"><abbr title="http://foo.com/some?long=true&nonsense=true">foo.com/som…nsense=true</abbr></a></p>';
+        '<p>Here\'s some text with a link <a href="http://foo.com/some?long=true&amp;nonsense=true&amp;long=true"><abbr title="http://foo.com/some?long=true&amp;nonsense=true&amp;long=true">foo.com/som…e&amp;long=true</abbr></a></p>';
 
       expect(result).documentBeEquivalentTo(expected);
     });

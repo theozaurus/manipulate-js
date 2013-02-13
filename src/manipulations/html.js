@@ -102,11 +102,17 @@
         // Remove http scheme from links description
         var simpleDesc = origDesc.replace(/^https?:\/\//,'');
 
+        // Make sure we don't split &amp;, convert to &
+        simpleDesc = simpleDesc.replace(/&amp;/g,"&");
+
         var shortDesc = simpleDesc;
         if(simpleDesc.length > opts.max_length){
           var tailLength = (opts.max_length - opts.slack)/2;
           shortDesc = simpleDesc.substr(0,tailLength) + opts.symbol + simpleDesc.substr(-tailLength);
         }
+
+        // Convert & back to &amp;
+        shortDesc = shortDesc.replace(/&/g,"&amp;");
 
         link.innerHTML = "<abbr title='"+origDesc+"'>"+shortDesc+"</abbr>";
       };
@@ -114,7 +120,7 @@
       var links = html.querySelectorAll("a");
       for(var i=0; i < links.length; i++){
         var link = links[i];
-        if(link.href == link.innerHTML.replace("&amp;","&")){
+        if(link.href == link.innerHTML.replace(/&amp;/g,"&")){
           shortenLink(link);
         }
       }
