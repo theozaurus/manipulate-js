@@ -1,22 +1,36 @@
 beforeEach(function() {
   this.addMatchers({
-    toBeEquivalentTo: function(expected){
-      var html = this.actual;
+    documentBeEquivalentTo: function(expected,options){
 
-      var wrappingElement = document.createElement("div");
-      wrappingElement.appendChild(html);
-      var string = wrappingElement.innerHTML;
-
-      var wrapExpected = document.createElement("div");
-      wrapExpected.innerHTML = expected;
-      expected = wrapExpected.innerHTML;
-
-      var notText = this.isNot ? " not" : "";
-      this.message = function(){
-        return "Expected '" + string + "'" + notText + " to be equivalent to '" + expected + "'";
+      var toString = function(object){
+        if(object === null){
+          return "";
+        }else if(object instanceof Document || object instanceof DocumentFragment){
+          return new XMLSerializer().serializeToString(object);
+        }
+        else{
+          return object.toString();
+        }
       };
 
-      return string == expected;
+      var toDocument = function(string){
+        var doc = document.createDocumentFragment();
+        var wrapper = document.createElement("div");
+        wrapper.innerHTML = string;
+        var size = wrapper.children.length;
+        for(var i=0; i < size; i++){
+          doc.appendChild(wrapper.children[0]);
+        }
+        return doc;
+      };
+
+      this.message = function () {
+        return "Expected " + toString(this.actual) + " to be equivalent to " + toString(expected);
+      };
+
+      return EquivalentXml.isEquivalent(this.actual,toDocument(expected),options);
     }
   });
+
+  this.addMatchers(EquivalentXml.jasmine);
 });

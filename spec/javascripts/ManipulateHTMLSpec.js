@@ -18,7 +18,7 @@ describe("Manipulate.HTML", function(){
       var expected =
         '<div><a href="foo" rel="nofollow">some link</a><a href="foo" rel="nofollow">other link</a></div>';
 
-      expect(result).toBeEquivalentTo(expected);
+      expect(result).documentBeEquivalentTo(expected);
     });
   });
 
@@ -37,7 +37,7 @@ describe("Manipulate.HTML", function(){
       var expected =
         '<div><h3 class="foo">I should be h3</h3><h4>I should be <span>h4</span></h4></div>';
 
-      expect(result).toBeEquivalentTo(expected);
+      expect(result).documentBeEquivalentTo(expected);
     });
 
     it("should not create any header elements that are greater than h6", function(){
@@ -50,19 +50,19 @@ describe("Manipulate.HTML", function(){
       var expected =
         '<div><h6>I should be h6</h6><h6>I should be h6</h6></div>';
 
-      expect(result).toBeEquivalentTo(expected);
+      expect(result).documentBeEquivalentTo(expected);
     });
 
     it("should handle header elements where the parentNode is the documentFragment", function(){
       var html = document.createDocumentFragment();
-      var element = document.createElement("h1")
+      var element = document.createElement("h1");
       element.innerHTML = "Hello";
       html.appendChild(element);
 
       var result = subject.convert(html);
       var expected = "<h3>Hello</h3>";
 
-      expect(result).toBeEquivalentTo(expected);
+      expect(result).documentBeEquivalentTo(expected);
     });
 
   });
@@ -84,7 +84,7 @@ describe("Manipulate.HTML", function(){
       var expected =
         '<p>Here\'s some text with a link <a href="http://foo.com/some?long=true&nonsense=true"><abbr title="http://foo.com/some?long=true&nonsense=true">foo.com/som…nsense=true</abbr></a></p>';
 
-      expect(result).toBeEquivalentTo(expected);
+      expect(result).documentBeEquivalentTo(expected);
     });
 
     it("should not shorten links where the href does not match the content", function(){
@@ -98,7 +98,7 @@ describe("Manipulate.HTML", function(){
       var expected =
         '<p>Here\'s some text with a link <a href="http://foo.com/some/long/nonsense">Foo Nonsense</a></p>';
 
-      expect(result).toBeEquivalentTo(expected);
+      expect(result).documentBeEquivalentTo(expected);
     });
 
   });

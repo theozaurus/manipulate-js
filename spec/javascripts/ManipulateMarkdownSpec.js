@@ -53,7 +53,7 @@ describe("Manipulate.Markdown", function(){
       var result = subject.convert("p1\n\np2");
 
       expect( result instanceof DocumentFragment ).toBeTruthy();
-      expect( result ).toBeEquivalentTo("<p>p1</p><p>p2</p>");
+      expect( result ).documentBeEquivalentTo("<p>p1</p><p>p2</p>");
     });
 
   });
