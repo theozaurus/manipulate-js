@@ -17,9 +17,9 @@ beforeEach(function() {
         var doc = document.createDocumentFragment();
         var wrapper = document.createElement("div");
         wrapper.innerHTML = string;
-        var size = wrapper.children.length;
+        var size = wrapper.childNodes.length;
         for(var i=0; i < size; i++){
-          doc.appendChild(wrapper.children[0]);
+          doc.appendChild(wrapper.childNodes[0]);
         }
         return doc;
       };

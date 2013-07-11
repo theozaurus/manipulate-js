@@ -3,6 +3,20 @@ describe("Manipulate.HTML", function(){
   var scope = com.jivatechnology.Manipulate.HTML;
   var subject;
 
+  describe("strToHTML", function(){
+    beforeEach(function(){
+      subject = new scope.strToHTML();
+    });
+
+    it("convert text to HTML", function(){
+      var string = "Some <b>text</b> that has <u>HTML</u> in it";
+
+      result = subject.convert(string);
+
+      expect(result).documentBeEquivalentTo(string);
+    });
+  });
+
   describe("noFollowLinks", function(){
     beforeEach(function(){
       subject = new scope.noFollowLinks();

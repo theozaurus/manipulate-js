@@ -4,6 +4,24 @@
 
   this.HTML = {};
 
+  this.HTML.strToHTML = this.build({
+    convert: function(html_string){
+      var element = document.createElement("div");
+      var fragment = document.createDocumentFragment();
+
+      element.innerHTML = html_string;
+      var size = element.childNodes.length;
+      for(var i = 0; i < size; i++){
+        // Always use 0 as we append to the fragment it is removed from the
+        // other element
+        var e = element.childNodes[0];
+        fragment.appendChild(e);
+      }
+
+      return fragment;
+    }
+  });
+
   this.HTML.noFollowLinks = this.build({
     convert: function(html){
       var elements = html.querySelectorAll("a");
